@@ -1,0 +1,167 @@
+To study **MiniLibX** and implement **FDF** (a wireframe 3D viewer project typically done in 42 school) **in less than one week**, you’ll need a **highly focused and practical approach** — assuming you already have some C knowledge and basic graphics/math skills.
+
+Here's a **step-by-step plan** with the best resources and approach to **master MiniLibX and FDF quickly and powerfully**:
+
+---
+
+## ✅ What You Need to Know First
+
+1. **C Programming**: Solid understanding of pointers, structs, memory allocation.
+2. **Basic Math**:
+
+   * 2D & 3D coordinates
+   * Matrix transformations (rotation, translation)
+   * Projection (isometric vs parallel)
+3. **MiniLibX Basics**:
+
+   * Creating a window
+   * Drawing pixels, lines
+   * Handling events (keyboard, mouse)
+
+---
+
+## 🔥 6-Day Intense Study + Build Plan
+
+### 📅 **Day 1: Understand MiniLibX Basics**
+
+* Learn how to:
+
+  * Open a window
+  * Draw a pixel
+  * Close the window with ESC or mouse event
+* 💡 Study from:
+
+  * ✅ [42Paris' MiniLibX doc (official)](https://harm-smits.github.io/42docs/libs/minilibx)
+  * ✅ Example Repo: [MiniLibX Simple Examples (by qst0)](https://github.com/qst0/ft_libgfx)
+
+**Practice**:
+
+* Open a window
+* Fill it with a color
+* Draw one pixel at the center
+
+---
+
+### 📅 **Day 2: Drawing Lines with Bresenham Algorithm**
+
+* Learn Bresenham’s line algorithm (essential for FDF).
+* Implement a function to draw lines between two points.
+* Practice drawing a grid.
+
+**Resources**:
+
+* ✅ [Bresenham's Algorithm Explanation (cs115)](https://www.cs.helsinki.fi/group/goa/mallinnus/lines/bresenh.html)
+
+---
+
+### 📅 **Day 3: Parse the FDF Map File**
+
+* Write a parser for the `.fdf` file format.
+* Each line = row of numbers (height)
+* Store in a 2D int array or a struct with x, y, z values.
+
+**Practice**:
+
+* Load and print a height map to terminal first.
+* Visualize the points as dots.
+
+---
+
+### 📅 **Day 4: Connect the Points**
+
+* Use your Bresenham line function to connect each point to its right and bottom neighbors.
+* Render the full wireframe grid in 2D.
+
+---
+
+### 📅 **Day 5: Add Transformations & Projections**
+
+* Learn and implement:
+
+  * Isometric projection
+  * Scaling (zoom)
+  * Moving the view (pan)
+  * Rotate on X/Y/Z axes (bonus)
+
+**Resources**:
+
+* ✅ [FDF Projection Theory Explained (in simple terms)](https://github.com/evansegura/FdF/wiki/Isometric-Projections)
+
+---
+
+### 📅 **Day 6: Keyboard Controls & Polish**
+
+* Add interactivity:
+
+  * Arrow keys to move
+  * +/- to zoom
+  * R to rotate
+* Add color based on height (optional but beautiful)
+
+---
+
+### 📅 **Day 7 (Optional)**: Add Features / Refactor
+
+* Dynamic color mapping
+* Smooth animation (bonus)
+* Memory management cleanup
+* Struct reorganization
+
+---
+
+## 🧠 Key Concepts to Master
+
+| Topic                                        | Why Important             |
+| -------------------------------------------- | ------------------------- |
+| `mlx_put_pixel`, `mlx_loop`, `mlx_new_image` | Base of all drawing       |
+| Bresenham Algorithm                          | Drawing lines efficiently |
+| Isometric Projection                         | 3D → 2D conversion        |
+| Parsing                                      | From .fdf to usable data  |
+| Event Handling                               | Controls and UI           |
+| Matrix math                                  | Rotation / projection     |
+
+---
+
+## 💡 Powerful Implementations Examples
+
+1. **42 student repos with advanced FDFs**:
+
+   * Search GitHub for: `fdf 42` — filter by stars or try:
+
+     * [https://github.com/afnizarnur/fdf](https://github.com/afnizarnur/fdf)
+     * [https://github.com/mbuon/FdF](https://github.com/mbuon/FdF)
+
+2. **YouTube tutorials (fast-paced)**:
+
+   * Look for: `FdF project tutorial 42` or `FdF MiniLibX explained`
+   * Example: [FdF Tutorial by Evil Rabbit](https://www.youtube.com/watch?v=NEA-jBgX4Jo)
+
+---
+
+## ✅ Tools to Help
+
+* **Valgrind**: Check for memory leaks
+* **GDB or LLDB**: Debugging segfaults
+* **Git**: Commit each working feature (track progress & rollback)
+
+---
+
+## 🔧 Bonus: Development Setup
+
+* Use **VSCode with C extensions** or **Vim + makefile**
+* Have a clean `Makefile` with rules for:
+
+  * `make`
+  * `make clean`
+  * `make re`
+
+---
+
+## TL;DR: One-Liner Summary
+
+> Learn MiniLibX basics → Implement Bresenham → Parse map → Draw grid → Apply projections → Add interactivity → Polish it — all in 6 days.
+
+---
+
+Want a **template repo or starter boilerplate** to begin faster? I can generate that for you.
+
