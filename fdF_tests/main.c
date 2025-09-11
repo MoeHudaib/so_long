@@ -12,40 +12,65 @@ void apply_isometric(struct t_point *p)
 
     p->x = (x - y) * cos(angle);
     p->y = (x + y) * sin(angle) - z;
+    // p->x = (x - z) * cos(angle);
+    // p->y= y + (x - z) * sin(angle);
 }
 
-int main()
+struct libmix
 {
-    void *mlx = mlx_init();
-    void *win = mlx_new_window(mlx, 800, 800, "Isometric Hole");
+    void *mlx;
+    void *win;
+    int  horizontal;
+    int  vertical;
+    int  color;
+};
 
-    int grid_size = 20;
-    int spacing = 10;
+struct matrix
+{
+    int xs;
+    int ys;
+    int spacing;
+};
 
-    for (int y = 0; y < grid_size; y++)
+void    draw_pixel(struct matrix matrix_, struct libmix data)
+{
+    for (int y = 0; y < matrix_.ys; y++)
     {
-        for (int x = 0; x < grid_size; x++)
+        for (int x = 0; x < matrix_.xs; x++)
         {
             struct t_point p;
-            p.x = x * spacing;
-            p.y = y * spacing;
+            p.x = x * matrix_.spacing;
+            p.y = y * matrix_.spacing;
 
             // Simulate a "hole" by lowering z in the center
-            int dx = x - grid_size / 2;
-            int dy = y - grid_size / 2;
+            int dx = x - matrix_.xs / 2;
+            int dy = y - matrix_.ys / 2;
             p.z = ((dx * dx + dy * dy) / 5); // Makes a dip in center
 
             apply_isometric(&p);
 
             // Offset to center on screen
-            int screen_x = p.x + 400;
-            int screen_y = p.y + 400;
+            data.horizontal = p.x + 400;
+            data.vertical = p.y + 400;
+            data.color = 0xFFFFFF;
 
-            mlx_pixel_put(mlx, win, screen_x, screen_y, 0xFFFFFF);
+            mlx_pixel_put(data.mlx, data.win, data.horizontal, data.vertical, data.color);
         }
     }
 
-    mlx_loop(mlx);
+};
+
+int main()
+{
+    struct libmix data;
+    data.mlx = mlx_init();
+    data.win = mlx_new_window(data.mlx, 800, 800, "Isometric Hole");
+    struct matrix matrix_;
+    matrix_.xs = 20;
+    matrix_.ys = 20;
+    matrix_.spacing = 10;
+    draw_pixel(matrix_, data);
+    mlx_loop(data.mlx);
     return 0;
 }
 

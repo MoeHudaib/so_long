@@ -1,0 +1,889 @@
+# So Long — Full Project Scaffold
+
+This Canvas contains a complete, modular **So Long** project scaffold (headers + sources + Makefile + README) designed for MiniLibX and 42-school style. The code is intentionally readable and split across files so you can test, iterate, and extend. The project assumes XPM images exist in `images/` named: `P.xpm`, `C.xpm`, `E.xpm`, `1.xpm`, `0.xpm`, `EN.xpm`.
+
+---
+
+## Project layout
+
+```
+so_long/
+├── includes/
+│   ├── game.h
+│   ├── map.h
+│   ├── player.h
+│   ├── enemy.h
+│   ├── input.h
+│   ├── render.h
+│   ├── sprite.h
+│   └── utils.h
+├── srcs/
+│   ├── main.c
+│   ├── init.c
+│   ├── map.c
+│   ├── player.c
+│   ├── enemy.c
+│   ├── input.c
+│   ├── render.c
+│   ├── sprite.c
+│   └── utils.c
+├── images/
+│   ├── P.xpm
+│   ├── C.xpm
+│   ├── E.xpm
+│   ├── 1.xpm
+│   ├── 0.xpm
+│   └── EN.xpm
+├── maps/
+│   └── sample.ber
+├── Makefile
+└── README.md
+```
+
+---
+
+> **Note:** Don't duplicate this file content elsewhere; open this Canvas document to copy specific files into your environment. Below are full file contents.
+
+---
+
+# includes/game.h
+
+```c
+#ifndef GAME_H
+# define GAME_H
+
+# include "map.h"
+# include "sprite.h"
+# include "player.h"
+# include "enemy.h"
+# include "render.h"
+# include "input.h"
+# include <mlx.h>
+
+typedef struct s_window
+{
+    void    *win_ptr;
+    int     width;
+    int     height;
+    char    *title;
+}   t_window;
+
+typedef struct s_game
+{
+    void    *mlx_ptr;
+    t_window   win;
+    t_map      map;
+    t_sprites  sprites;
+    int        frame_counter; // for enemy timing
+    int        running;
+}   t_game;
+
+#endif
+```
+
+---
+
+# includes/map.h
+
+```c
+#ifndef MAP_H
+# define MAP_H
+
+# include "player.h"
+# include "enemy.h"
+
+typedef struct s_point
+{
+    int x;
+    int y;
+}   t_point;
+
+typedef enum e_point_type
+{
+    WALL,
+    FLOOR,
+    COLLECTIBLE,
+    EXIT_
+}   t_point_type;
+
+typedef struct s_map
+{
+    char    **grid; // nul-terminated rows
+    int     width;
+    int     height;
+    int     collectible_count;
+    int     player_count;
+    int     exit_count;
+    t_player   player;
+    t_enemy    *enemies;
+    int        enemy_count;
+}   t_map;
+
+// map functions
+int     load_map_from_file(const char *path, t_map *map);
+int     validate_map(t_map *map);
+void    free_map(t_map *map);
+
+#endif
+```
+
+---
+
+# includes/player.h
+
+```c
+#ifndef PLAYER_H
+# define PLAYER_H
+
+# include "map.h"
+
+typedef struct s_player
+{
+    t_point position;
+    int     collected;
+    int     moves;
+}   t_player;
+
+void    init_player_from_map(t_map *map);
+int     move_player(t_game *game, int dx, int dy);
+
+#endif
+```
+
+---
+
+# includes/enemy.h
+
+```c
+#ifndef ENEMY_H
+# define ENEMY_H
+
+# include "map.h"
+
+typedef struct s_enemy
+{
+    t_point position;
+    int     alive;
+}   t_enemy;
+
+void    init_enemies_from_map(t_map *map);
+void    move_enemies(t_game *game);
+
+#endif
+```
+
+---
+
+# includes/sprite.h
+
+```c
+#ifndef SPRITE_H
+# define SPRITE_H
+
+# include <mlx.h>
+
+typedef struct s_sprite
+{
+    void    *img;
+    int     w;
+    int     h;
+}   t_sprite;
+
+typedef struct s_sprites
+{
+    t_sprite floor;
+    t_sprite wall;
+    t_sprite player;
+    t_sprite collectible;
+    t_sprite exit_s;
+    t_sprite enemy;
+    int      tile_size;
+}   t_sprites;
+
+int     load_sprites(void *mlx, t_sprites *s, const char *images_dir);
+void    destroy_sprites(void *mlx, t_sprites *s);
+
+#endif
+```
+
+---
+
+# includes/render.h
+
+```c
+#ifndef RENDER_H
+# define RENDER_H
+
+# include "game.h"
+
+int     render(t_game *game);
+
+#endif
+```
+
+---
+
+# includes/input.h
+
+```c
+#ifndef INPUT_H
+# define INPUT_H
+
+# include "game.h"
+
+int     handle_key(int keycode, void *param);
+int     loop_hook(void *param);
+
+// Keycodes for macOS/linux may differ. Provide both macros when needed.
+# ifndef KEY_W
+#  define KEY_W 13
+#  define KEY_A 0
+#  define KEY_S 1
+#  define KEY_D 2
+#  define KEY_UP 126
+#  define KEY_DOWN 125
+#  define KEY_LEFT 123
+#  define KEY_RIGHT 124
+#  define KEY_ESC 53
+# endif
+
+#endif
+```
+
+---
+
+# includes/utils.h
+
+```c
+#ifndef UTILS_H
+# define UTILS_H
+
+# include "map.h"
+
+void    *xmalloc(size_t size);
+void    ft_putstr_fd(const char *s, int fd);
+
+#endif
+```
+
+---
+
+# srcs/main.c
+
+```c
+#include "game.h"
+#include "utils.h"
+#include <stdlib.h>
+
+int main(int argc, char **argv)
+{
+    t_game  game;
+
+    if (argc != 2)
+    {
+        ft_putstr_fd("Usage: ./so_long path/to/map.ber\n", 2);
+        return (1);
+    }
+    ft_memset(&game, 0, sizeof(game));
+    if (!load_map_from_file(argv[1], &game.map))
+    {
+        ft_putstr_fd("Failed to load map\n", 2);
+        return (1);
+    }
+    if (!validate_map(&game.map))
+    {
+        free_map(&game.map);
+        return (1);
+    }
+    game.mlx_ptr = mlx_init();
+    if (!game.mlx_ptr)
+    {
+        ft_putstr_fd("Failed to init mlx\n", 2);
+        free_map(&game.map);
+        return (1);
+    }
+    game.sprites.tile_size = 64; // tile pixels; adjust to your XPM sizes
+    if (!load_sprites(game.mlx_ptr, &game.sprites, "images"))
+    {
+        ft_putstr_fd("Failed to load sprites\n", 2);
+        free_map(&game.map);
+        return (1);
+    }
+    game.win.width = game.map.width * game.sprites.tile_size;
+    game.win.height = game.map.height * game.sprites.tile_size;
+    game.win.title = "so_long";
+    game.win.win_ptr = mlx_new_window(game.mlx_ptr, game.win.width, game.win.height, game.win.title);
+    if (!game.win.win_ptr)
+    {
+        ft_putstr_fd("Failed to create window\n", 2);
+        destroy_sprites(game.mlx_ptr, &game.sprites);
+        free_map(&game.map);
+        return (1);
+    }
+    init_player_from_map(&game.map);
+    init_enemies_from_map(&game.map);
+
+    mlx_key_hook(game.win.win_ptr, handle_key, &game);
+    mlx_loop_hook(game.mlx_ptr, loop_hook, &game);
+    mlx_loop(game.mlx_ptr);
+
+    return (0);
+}
+```
+
+---
+
+# srcs/init.c
+
+```c
+#include "game.h"
+#include "utils.h"
+
+// small helper
+void    init_player_from_map(t_map *map)
+{
+    int y = 0;
+
+    while (map->grid && map->grid[y])
+    {
+        int x = 0;
+        while (map->grid[y][x])
+        {
+            if (map->grid[y][x] == 'P')
+            {
+                map->player.position.x = x;
+                map->player.position.y = y;
+                map->player.collected = 0;
+                map->player.moves = 0;
+            }
+            x++;
+        }
+        y++;
+    }
+}
+```
+
+---
+
+# srcs/map.c
+
+```c
+#include "map.h"
+#include "utils.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+static int count_lines(int fd)
+{
+    char buf[4096];
+    int bytes;
+    int lines = 0;
+
+    while ((bytes = read(fd, buf, sizeof(buf))) > 0)
+    {
+        for (int i = 0; i < bytes; ++i)
+            if (buf[i] == '\n')
+                lines++;
+    }
+    return (lines + 1);
+}
+
+int load_map_from_file(const char *path, t_map *map)
+{
+    int fd = open(path, O_RDONLY);
+    if (fd < 0)
+    {
+        ft_putstr_fd("Cannot open map file\n", 2);
+        return (0);
+    }
+    int lines = count_lines(fd);
+    lseek(fd, 0, SEEK_SET);
+
+    map->grid = xmalloc(sizeof(char *) * (lines + 1));
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t r;
+    int i = 0;
+    // simple getline replacement using read: keep it short for canvas
+    FILE *f = fdopen(fd, "r");
+    if (!f)
+    {
+        close(fd);
+        return (0);
+    }
+    while (getline(&line, &len, f) != -1)
+    {
+        // strip trailing newline
+        int l = strlen(line);
+        if (l > 0 && line[l - 1] == '\n')
+            line[l - 1] = '\0';
+        map->grid[i++] = strdup(line);
+    }
+    map->grid[i] = NULL;
+    free(line);
+    fclose(f);
+
+    map->height = i;
+    map->width = (i > 0) ? strlen(map->grid[0]) : 0;
+
+    // count special tiles
+    map->collectible_count = 0;
+    map->player_count = 0;
+    map->exit_count = 0;
+    map->enemy_count = 0;
+    for (int y = 0; y < map->height; ++y)
+    {
+        for (int x = 0; x < map->width; ++x)
+        {
+            char c = map->grid[y][x];
+            if (c == 'C') map->collectible_count++;
+            else if (c == 'P') map->player_count++;
+            else if (c == 'E') map->exit_count++;
+            else if (c == 'N') map->enemy_count++;
+        }
+    }
+    return (1);
+}
+
+int validate_map(t_map *map)
+{
+    if (!map->grid)
+    {
+        ft_putstr_fd("Empty map\n", 2);
+        return (0);
+    }
+    if (map->player_count != 1)
+    {
+        ft_putstr_fd("Map must contain exactly one player\n", 2);
+        return (0);
+    }
+    if (map->exit_count < 1)
+    {
+        ft_putstr_fd("Map must contain at least one exit\n", 2);
+        return (0);
+    }
+    if (map->collectible_count < 1)
+    {
+        ft_putstr_fd("Map must contain at least one collectible\n", 2);
+        return (0);
+    }
+    // check rectangular
+    for (int y = 0; y < map->height; ++y)
+        if ((int)strlen(map->grid[y]) != map->width)
+        {
+            ft_putstr_fd("Map must be rectangular\n", 2);
+            return (0);
+        }
+    // check walls border
+    for (int x = 0; x < map->width; ++x)
+    {
+        if (map->grid[0][x] != '1' || map->grid[map->height - 1][x] != '1')
+        {
+            ft_putstr_fd("Map must be closed/surrounded by walls\n", 2);
+            return (0);
+        }
+    }
+    for (int y = 0; y < map->height; ++y)
+    {
+        if (map->grid[y][0] != '1' || map->grid[y][map->width - 1] != '1')
+        {
+            ft_putstr_fd("Map must be closed/surrounded by walls\n", 2);
+            return (0);
+        }
+    }
+    return (1);
+}
+
+void free_map(t_map *map)
+{
+    if (!map || !map->grid) return;
+    for (int i = 0; map->grid[i]; ++i)
+        free(map->grid[i]);
+    free(map->grid);
+    if (map->enemies)
+        free(map->enemies);
+}
+```
+
+---
+
+# srcs/player.c
+
+```c
+#include "player.h"
+#include "game.h"
+#include <string.h>
+
+int move_player(t_game *game, int dx, int dy)
+{
+    t_map *map = &game->map;
+    int nx = map->player.position.x + dx;
+    int ny = map->player.position.y + dy;
+    char dest = map->grid[ny][nx];
+
+    if (dest == '1')
+        return (0);
+    if (dest == 'C')
+    {
+        map->player.collected++;
+        map->collectible_count--;
+        map->grid[ny][nx] = '0';
+    }
+    if (dest == 'E')
+    {
+        if (map->collectible_count == 0)
+        {
+            ft_putstr_fd("You win!\n", 1);
+            game->running = 0;
+            exit(0);
+        }
+        else
+            return (0);
+    }
+    // move player char in map grid
+    map->grid[map->player.position.y][map->player.position.x] = '0';
+    map->player.position.x = nx;
+    map->player.position.y = ny;
+    map->grid[ny][nx] = 'P';
+    map->player.moves++;
+    return (1);
+}
+```
+
+---
+
+# srcs/enemy.c
+
+#include "enemy.h"
+#include "game.h"
+#include <stdlib.h>
+#include <time.h>
+
+#define ENEMY_COOLDOWN 30 // number of frames before moving again
+
+static int enemy_tick = 0;
+
+void init_enemies_from_map(t_map *map)
+{
+    if (map->enemy_count == 0)
+    {
+        map->enemies = NULL;
+        return;
+    }
+    map->enemies = malloc(sizeof(t_enemy) * map->enemy_count);
+    if (!map->enemies)
+        return;
+
+    int i = 0;
+    for (int y = 0; y < map->height; y++)
+    {
+        for (int x = 0; x < map->width; x++)
+        {
+            if (map->grid[y][x] == 'N') // Enemy tile
+            {
+                map->enemies[i].position.x = x;
+                map->enemies[i].position.y = y;
+                i++;
+            }
+        }
+    }
+    srand(time(NULL));
+}
+
+static void get_random_direction(int *dx, int *dy)
+{
+    int dir = rand() % 4; // 0=up,1=down,2=left,3=right
+    *dx = 0;
+    *dy = 0;
+    if (dir == 0)
+        *dy = -1;
+    else if (dir == 1)
+        *dy = 1;
+    else if (dir == 2)
+        *dx = -1;
+    else if (dir == 3)
+        *dx = 1;
+}
+
+void move_enemies(t_map *map)
+{
+    if (!map->enemies)
+        return;
+
+    enemy_tick++;
+    if (enemy_tick < ENEMY_COOLDOWN)
+        return;
+    enemy_tick = 0; // reset after cooldown
+
+    for (int i = 0; i < map->enemy_count; i++)
+    {
+        t_enemy *enemy = &map->enemies[i];
+        int dx, dy;
+        get_random_direction(&dx, &dy);
+        int new_x = enemy->position.x + dx;
+        int new_y = enemy->position.y + dy;
+
+        // check valid move
+        if (new_x >= 0 && new_x < map->width &&
+            new_y >= 0 && new_y < map->height &&
+            map->grid[new_y][new_x] != '1')
+        {
+            enemy->position.x = new_x;
+            enemy->position.y = new_y;
+        }
+
+        // collision with player
+        if (enemy->position.x == map->player.position.x &&
+            enemy->position.y == map->player.position.y)
+        {
+            game_over(map, 0);
+        }
+    }
+}
+
+---
+
+# srcs/input.c
+
+```c
+#include "input.h"
+#include "player.h"
+#include <stdlib.h>
+
+int handle_key(int keycode, void *param)
+{
+    t_game *game = (t_game *)param;
+    if (keycode == KEY_ESC)
+    {
+        destroy_sprites(game->mlx_ptr, &game->sprites);
+        free_map(&game->map);
+        exit(0);
+    }
+    if (keycode == KEY_W || keycode == KEY_UP)
+        move_player(game, 0, -1);
+    if (keycode == KEY_S || keycode == KEY_DOWN)
+        move_player(game, 0, 1);
+    if (keycode == KEY_A || keycode == KEY_LEFT)
+        move_player(game, -1, 0);
+    if (keycode == KEY_D || keycode == KEY_RIGHT)
+        move_player(game, 1, 0);
+    return (0);
+}
+
+int loop_hook(void *param)
+{
+    t_game *game = (t_game *)param;
+    game->frame_counter++;
+    // move enemies every 60 frames (approx ~1s depending on refresh)
+    if (game->frame_counter >= 60)
+    {
+        move_enemies(game);
+        game->frame_counter = 0;
+    }
+    render(game);
+    return (0);
+}
+```
+
+---
+
+# srcs/render.c
+
+```c
+#include "render.h"
+#include "sprite.h"
+#include <string.h>
+
+int render(t_game *game)
+{
+    t_map *m = &game->map;
+    int ts = game->sprites.tile_size;
+
+    for (int y = 0; y < m->height; ++y)
+    {
+        for (int x = 0; x < m->width; ++x)
+        {
+            char c = m->grid[y][x];
+            void *img = NULL;
+            if (c == '1') img = game->sprites.wall.img;
+            else if (c == '0') img = game->sprites.floor.img;
+            else if (c == 'P') img = game->sprites.player.img;
+            else if (c == 'C') img = game->sprites.collectible.img;
+            else if (c == 'E') img = game->sprites.exit_s.img;
+            else if (c == 'N') img = game->sprites.enemy.img;
+            if (img)
+                mlx_put_image_to_window(game->mlx_ptr, game->win.win_ptr, img, x * ts, y * ts);
+        }
+    }
+    return (0);
+}
+```
+
+---
+
+# srcs/sprite.c
+
+```c
+#include "sprite.h"
+#include "utils.h"
+#include <stdio.h>
+#include <string.h>
+
+static void load_img(void *mlx, t_sprite *s, const char *path)
+{
+    s->img = mlx_xpm_file_to_image(mlx, (char *)path, &s->w, &s->h);
+}
+
+int load_sprites(void *mlx, t_sprites *s, const char *images_dir)
+{
+    char path[256];
+    snprintf(path, sizeof(path), "%s/0.xpm", images_dir);
+    load_img(mlx, &s->floor, path);
+    snprintf(path, sizeof(path), "%s/1.xpm", images_dir);
+    load_img(mlx, &s->wall, path);
+    snprintf(path, sizeof(path), "%s/P.xpm", images_dir);
+    load_img(mlx, &s->player, path);
+    snprintf(path, sizeof(path), "%s/C.xpm", images_dir);
+    load_img(mlx, &s->collectible, path);
+    snprintf(path, sizeof(path), "%s/E.xpm", images_dir);
+    load_img(mlx, &s->exit_s, path);
+    snprintf(path, sizeof(path), "%s/EN.xpm", images_dir);
+    load_img(mlx, &s->enemy, path);
+    // basic checks
+    if (!s->floor.img || !s->wall.img || !s->player.img || !s->collectible.img || !s->exit_s.img)
+    {
+        ft_putstr_fd("Missing one or more sprites\n", 2);
+        return (0);
+    }
+    return (1);
+}
+
+void destroy_sprites(void *mlx, t_sprites *s)
+{
+    if (s->floor.img) mlx_destroy_image(mlx, s->floor.img);
+    if (s->wall.img) mlx_destroy_image(mlx, s->wall.img);
+    if (s->player.img) mlx_destroy_image(mlx, s->player.img);
+    if (s->collectible.img) mlx_destroy_image(mlx, s->collectible.img);
+    if (s->exit_s.img) mlx_destroy_image(mlx, s->exit_s.img);
+    if (s->enemy.img) mlx_destroy_image(mlx, s->enemy.img);
+}
+```
+
+---
+
+# srcs/utils.c
+
+```c
+#include "utils.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdio.h>
+
+void *xmalloc(size_t size)
+{
+    void *p = malloc(size);
+    if (!p)
+    {
+        ft_putstr_fd("malloc failed\n", 2);
+        exit(1);
+    }
+    memset(p, 0, size);
+    return p;
+}
+
+void ft_putstr_fd(const char *s, int fd)
+{
+    if (!s) return;
+    write(fd, s, strlen(s));
+}
+```
+
+---
+
+# Makefile
+
+```makefile
+NAME = so_long
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror -g
+MLX_FLAGS = -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+INCLUDES = -Iincludes
+SRCS = \
+	srcs/main.c \
+	srcs/init.c \
+	srcs/map.c \
+	srcs/player.c \
+	srcs/enemy.c \
+	srcs/input.c \
+	srcs/render.c \
+	srcs/sprite.c \
+	srcs/utils.c
+
+OBJS = $(SRCS:.c=.o)
+
+all: $(NAME)
+
+$(NAME): $(SRCS)
+	$(CC) $(CFLAGS) $(INCLUDES) $(SRCS) -o $(NAME) $(MLX_FLAGS)
+
+clean:
+	rm -f $(OBJS)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
+```
+
+---
+
+# maps/sample.ber
+
+```
+111111
+1P0C01
+1000N1
+1C0E11
+111111
+```
+
+---
+
+# README.md
+
+```
+So Long — 42 school style project scaffold
+
+Usage:
+  make
+  ./so_long maps/sample.ber
+
+Images (64x64 recommended): place them inside images/:
+  P.xpm  -> player
+  C.xpm  -> collectible
+  E.xpm  -> exit
+  1.xpm  -> wall
+  0.xpm  -> floor
+  EN.xpm -> enemy (optional)
+
+Notes:
+ - This scaffold focuses on clarity and modularity. You may refactor to match your libft and coding style.
+ - Keycodes may differ on Linux vs macOS. Adjust in includes/input.h if needed.
+ - Enemy logic is intentionally simple (random moves). You can replace it with smarter logic.
+```
+
+---
+
+If you'd like, I can now:
+
+* Convert this scaffold to match your libft-style functions (e.g. ft\_strdup, ft\_strlen) and replace `malloc/strdup` usage accordingly.
+* Add unit tests, debug prints, or more advanced enemy AI.
+* Reduce tile size, support animated sprites, or add commandline options.
+
+Tell me which extra polish you'd like and I'll update the files here in the Canvas. Enjoy — make me proud! 🎮
+
