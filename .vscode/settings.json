@@ -12,6 +12,7 @@
         "mlx.h": "c",
         "mlx_int.h": "c",
         "point.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "stdio.h": "c"
     }
 }

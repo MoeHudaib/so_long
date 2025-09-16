@@ -101,16 +101,17 @@ void move_player(t_minilibx *data, int dx, int dy, int movement_type)
             }
         }
         draw_image_32(data, "srcs/images/enemy/N13.xpm", new_x * 32, new_y * 32);
-        usleep(100000);
+       // usleep(50000);
         draw_image_32(data, "srcs/images/enemy/N14.xpm", new_x * 32, new_y * 32);
-        usleep(100000);
+       // usleep(50000);
         draw_image_32(data, "srcs/images/enemy/N15.xpm", new_x * 32, new_y * 32);
-        usleep(100000);
+        //usleep(50000);
         draw_image_32(data, "srcs/images/enemy/N16.xpm", new_x * 32, new_y * 32);
-        usleep(100000);
+        //usleep(50000);
         draw_image_32(data, "srcs/images/enemy/N17.xpm", new_x * 32, new_y * 32);
         usleep(100000);
         draw_image_32(data, "srcs/images/enemy/N18.xpm", new_x * 32, new_y * 32);
+        draw_image_32(data, "srcs/images/up/hurt.xpm", new_x * 32, new_y * 32);
     }
     if (cell == 'C') // collectible
     {
@@ -142,6 +143,7 @@ void move_player(t_minilibx *data, int dx, int dy, int movement_type)
     data->map.player.position.x = new_x;
     data->map.player.position.y = new_y;
     ++data->map.player.steps;
+    printf("steps: %d\n", data->map.player.steps);
 
     //  Redraw only the changed tiles
     if (movement_type == UP)

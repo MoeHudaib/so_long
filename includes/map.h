@@ -6,6 +6,10 @@
 #include "./libft/libft.h"
 #include <fcntl.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+
+
 typedef enum e_error_type
 {
     INVALID_FILE = -42,
@@ -44,13 +48,18 @@ typedef struct s_map
 // free map resources
 // render map
 // update map state
-void free_tokens(char **tokens);
+
 int get_map_hw(const char *filename, t_map *map);
-int set_map_grid(const char *filename, t_map *map, char map_delimeter);
+
+void free_tokens(char **tokens);
+int set_map_grid(const char *filename, t_map *map);
 void free_grid(char **grid, int count);
-int walls_checker(t_map *map);
+int	walls_checker(t_map *map);
 int map_validator(t_map *map);
-t_map   map_constructor(char *filename, char delimeter);
+t_map   map_constructor(char *filename);
 void    map_destructor(t_map *map);
+void    error_type(int error_type);
+void	get_grid_stats(t_map *map);
+
 
 #endif

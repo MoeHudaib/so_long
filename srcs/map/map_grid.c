@@ -2,124 +2,72 @@
 #include "get_next_line.h"
 #include "libft/libft.h"
 
-void free_grid(char **grid, int count)
+char *remove_nl(char *line)
 {
     int i;
-    
-    if (!grid)
-        return;
-    
+
     i = 0;
-    while (i < count)
+    if (!line)
+        return (NULL);
+    while (line[i])
     {
-        free(grid[i]);
-        grid[i] = NULL;
+        if ( line[i] == '\n')
+            line[i] = '\0';
         i++;
     }
+    return (line);
 }
 
-static char    *get_line_from_split(char **grid)
+int set_map_grid(const char *filename, t_map *map)
 {
-    char    *ptr;
-    int i;
-
-    if (!grid || !*grid)
-        return (NULL);
-    i = 0;
-    while(grid[i])
-        i++;
-    ptr = malloc(i + 1);
-    if (!ptr)
-        return (NULL);
-    i = 0;
-    while (grid[i])
-    {
-        ptr[i] = grid[i][0];
-        i++;
-    }
-    ptr[i] = '\0';
-    return (ptr);
-}
-
-static char    **get_map_grid(int fd, t_map *map, char c)
-{
-    char    **grid;
-    char    **split;
-    char    *line;
-    char    *tmp;
-    int     i;
-
-    i = 0;
-    grid = malloc(sizeof(char *) * (map->height + 1));
-    if (!grid)
-        return (NULL);
-    line = get_next_line(fd);
-    while (line && i < map->height)
-    {
-        split = ft_split(line, c);
-        if (!split || !*split)
-        {
-            free(line);
-            free_grid(grid, i); // Free previously allocated grid entries
-            free(grid);
-            return (NULL);
-        }
-        tmp = get_line_from_split(split);
-        free_tokens(split); // Free split immediately after use
-        split = NULL;
-        if (!tmp || !*tmp)
-        {
-            free(line);
-            free(tmp); // Free tmp if allocated but invalid
-            free_grid(grid, i);
-            free(grid);
-            return (NULL);
-        }
-        grid[i] = ft_strdup(tmp);
-        free(tmp); // Free tmp immediately after use
-        tmp = NULL;
-        if (!grid[i])
-        {
-            free(line);
-            free_grid(grid, i);
-            free(grid);
-            return (NULL);
-        }
-        free(line);
-        line = get_next_line(fd);
-        i++;
-    }
-    if (i < map->height) // Handle case where we read less than actual lines
-    {
-        free(line);
-        free_grid(grid, i);
-        free(grid);
-        return (NULL);
-    }
-    grid[i] = NULL;
-    while (line)
-    {
-        free(line);
-        line = get_next_line(fd);
-    }
-    return (grid);
-}
-
-int set_map_grid(const char *filename, t_map *map, char map_delimeter)
-{
+    char *line;
     int fd;
+    int i;
 
-    if (!map || !filename)
+    if (!filename)
         return (INVALID_FILE_NAME);
+
     fd = open(filename, O_RDONLY);
     if (fd < 0)
         return (INVALID_FILE);
-    map->grid = get_map_grid(fd, map, map_delimeter);
+
+    line = get_next_line(fd);
+    if (!line)
+    {
+        close(fd);
+        return (INVALID_LINE);
+    }
+
+    map->grid = malloc(sizeof(char *) * (map->height + 1));
     if (!map->grid)
-        return (INVLAID_GRID);
+    {
+        free(line);
+        close(fd);
+        return (MEMORY_ALLOCATION_FAILURE);
+    }
+
+    i = 0;
+    while (line && i < map->height)
+    {
+        line = remove_nl(line);
+        map->grid[i] = ft_strdup(line);
+        if (!map->grid[i])
+        {
+            free_tokens(map->grid);
+            free(line);
+            close(fd);
+            return (MEMORY_ALLOCATION_FAILURE);
+        }
+        i++;
+        free(line);
+        line = get_next_line(fd);
+    }
+    map->grid[i] = NULL;
+
     close(fd);
-    return (0); // Return 0 on success
+    return (0);
 }
+
 // #include <stdio.h>
 // int main()
 // {
@@ -133,3 +81,4 @@ int set_map_grid(const char *filename, t_map *map, char map_delimeter)
 //         printf("%s\n", map.grid[i++]);
 //     }
 // }
+

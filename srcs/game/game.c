@@ -126,7 +126,7 @@ int draw_map(t_minilibx *data)
                 "srcs/images/coin/C5.xpm"
                 };
 
-                t_anim *coin_anim = init_anim(coin_files, 5, 6000, j, i);
+                t_anim *coin_anim = init_anim(coin_files, 5, 15000, j, i);
                 data->anims[data->anim_count++] = coin_anim;
             }   
             else if (c == 'N')
@@ -147,7 +147,7 @@ int draw_map(t_minilibx *data)
                 "srcs/images/enemy/N12.xpm"
                 };
 
-                t_anim *coin_anim = init_anim(coin_files, 12, 2000, j, i);
+                t_anim *coin_anim = init_anim(coin_files, 12, 4000, j, i);
                 data->anims[data->anim_count++] = coin_anim;
             }   
             else
@@ -176,7 +176,7 @@ int animate_all(t_minilibx *data)
 int main(void)
 {
     t_map map;
-    map = map_constructor("srcs/map/hello.txt", ' ');
+    map = map_constructor("srcs/map/hello.txt");
     printf("Height: %d\nWIDTH: %d\n", map.height, map.width);
     t_minilibx data;
     data = minilibx_constructor(&map, map.height * 32, map.width * 32, "Test");

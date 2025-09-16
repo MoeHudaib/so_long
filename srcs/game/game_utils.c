@@ -82,8 +82,7 @@ t_image_data load_and_scale_xpm_96x32(void *mlx, char *filename)
             int src_y = y * original.height / 32;
             int src_pos = src_y * original.line_length + src_x * (original.bpp / 8);
             int dst_pos = y * scaled.line_length + x * (scaled.bpp / 8);
-            *(unsigned int *)(scaled.addr + dst_pos) =
-                *(unsigned int *)(original.addr + src_pos);
+            *(unsigned int *)(scaled.addr + dst_pos) = *(unsigned int *)(original.addr + src_pos);
         }
     }
 

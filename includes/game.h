@@ -5,6 +5,7 @@
 #include "../minilibx-linux/mlx.h"
 #include "../minilibx-linux/mlx_int.h"
 
+
 typedef struct s_anim
 {
     char    **frames;      // array of file paths
@@ -43,14 +44,14 @@ typedef struct s_image_data {
 
 
 /*		Minilibx Constr-Destr		*/
-t_minilibx minilibx_constructor(t_map *map, int height, int width, char *label);
-void	minilibx_destructor(t_minilibx *data);
+t_minilibx  minilibx_constructor(t_map *map, int height, int width, char *label);
+void	    minilibx_destructor(t_minilibx *data);
 
 /*		xpm processing		*/
 int				draw_image_32(t_minilibx *data, char *filename, int x, int y);
 t_image_data	load_and_scale_xpm(void *mlx, char *filename);
-t_image_data load_and_scale_xpm_96x32(void *mlx, char *filename);
-int draw_image_96x32(t_minilibx *data, char *filename, int x, int y);
+t_image_data    load_and_scale_xpm_96x32(void *mlx, char *filename);
+int             draw_image_96x32(t_minilibx *data, char *filename, int x, int y);
 
 
 
@@ -65,15 +66,15 @@ int game_over(t_map *map, int win);
 int close_window(t_minilibx *data);
 
 /*		Game Movement	*/
-void	move_player(t_minilibx *data, int dx, int dy, int movement_type);
-void    down(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-void    left(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-void    right(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-void    up(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-t_anim *init_anim(char **files, int frame_count, int speed, int x, int y);
-void render_anim(t_minilibx *data, t_anim *anim);
-void update_anim(t_minilibx *data, t_anim *anim);
-int animate_all(t_minilibx *data);
+void	    move_player(t_minilibx *data, int dx, int dy, int movement_type);
+void        down(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
+void        left(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
+void        right(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
+void        up(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
+t_anim      *init_anim(char **files, int frame_count, int speed, int x, int y);
+void        render_anim(t_minilibx *data, t_anim *anim);
+void        update_anim(t_minilibx *data, t_anim *anim);
+int         animate_all(t_minilibx *data);
 
 
 #endif
