@@ -37,6 +37,13 @@ t_map   map_constructor(char *filename)
             map_destructor(&map);
             exit(1);
         }
+    checker = check_solvable(&map);
+        if (checker < 0)
+        {
+        error_type(checker);
+        map_destructor(&map);
+        exit(1);
+        }
     return (map);
 }
 

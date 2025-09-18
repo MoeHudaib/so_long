@@ -1,7 +1,40 @@
 #include "game.h"
+
+void free_anims(t_minilibx *data)
+{
+    if (!data || !data->anims)
+        return;
+
+    for (int i = 0; i < data->anim_count; i++)
+    {
+        if (data->anims[i])
+        {
+            // Free the frames array (but not the strings themselves)
+            if (data->anims[i]->frames)
+                free(data->anims[i]->frames);
+
+            // Free the t_anim struct itself
+            free(data->anims[i]);
+        }
+    }
+
+    free(data->anims);
+    data->anims = NULL;
+    data->anim_count = 0;
+}
+
+void free_minilibx(t_minilibx *data)
+{
+    if (!data)
+        return;
+    free_anims(data);
+}
+
+
 /* -------------------------------------------------- */
 /* Minilibx constructor/destructor                    */
 /* -------------------------------------------------- */
+
 
 t_minilibx minilibx_constructor(t_map *map, int height, int width, char *label)
 {
@@ -25,6 +58,10 @@ void minilibx_destructor(t_minilibx *data)
     if (!data)
         return;
 
+    if (data->map.grid)
+    {
+        map_destructor(&data->map);
+    }
     if (data->win)
     {
         mlx_destroy_window(data->mlx, data->win);
@@ -35,6 +72,10 @@ void minilibx_destructor(t_minilibx *data)
         mlx_destroy_display(data->mlx);
         free(data->mlx);
         data->mlx = NULL;
+    }
+    if (data->anims)
+    {
+        free_minilibx(data);
     }
 }
 
@@ -66,7 +107,7 @@ void move_player(t_minilibx *data, int dx, int dy, int movement_type)
     if (cell == 'E') // exit
     {
         if (data->map.collectibles == 0)
-            game_over(&data->map, 1); // win
+            game_over(data, 1); // win
         return;
     }
     if (cell == 'N') // enemy
@@ -75,7 +116,7 @@ void move_player(t_minilibx *data, int dx, int dy, int movement_type)
         data->map.player.health -= 50;
         if (data->map.player.health == -50)
         {    
-            game_over(&data->map, 0); // lose
+            game_over(data, 0); // lose
             return;
         }
         else if (data->map.player.health == 50)

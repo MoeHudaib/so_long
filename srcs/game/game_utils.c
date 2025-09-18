@@ -2,39 +2,20 @@
 
 int close_window(t_minilibx *data)
 {
-    // Free map memory
-    map_destructor(&data->map);
-
-    // Destroy window if it exists
-    if (data->win)
-    {
-        mlx_destroy_window(data->mlx, data->win);
-        data->win = NULL;
-    }
-
-    // Destroy display + free mlx pointer (Linux)
-    if (data->mlx)
-    {
-        mlx_destroy_display(data->mlx);
-        free(data->mlx);
-        data->mlx = NULL;
-    }
-
+    minilibx_destructor(data);
     exit(0); // clean exit
     return (0);
 }
 
-int game_over(t_map *map, int win)
+int game_over(t_minilibx *data, int win)
 {
     if (win)
         write(1, "You Win!\n", 9);
     else
         write(1, "Game Over!\n", 11);
 
-    // free map (but don’t kill mlx here, let close_window handle it)
-    map_destructor(map);
-
-    exit(0); // terminate program
+    minilibx_destructor(data);
+    exit(0); // clean exit
     return (0);
 }
 

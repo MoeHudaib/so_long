@@ -11,6 +11,7 @@ typedef struct s_player
 	int steps;
 	int collectibles;
 	int health;
+	int	last_movement;
 }	t_player;
 
 typedef enum e_movement_type

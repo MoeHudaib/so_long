@@ -62,7 +62,7 @@ int handle_key(int keycode, t_minilibx *data);
 int draw_map(t_minilibx *data);
 
 /*		Ending Methods	*/
-int game_over(t_map *map, int win);
+int game_over(t_minilibx *data, int win);
 int close_window(t_minilibx *data);
 
 /*		Game Movement	*/

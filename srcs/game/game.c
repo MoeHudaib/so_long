@@ -147,7 +147,7 @@ int draw_map(t_minilibx *data)
                 "srcs/images/enemy/N12.xpm"
                 };
 
-                t_anim *coin_anim = init_anim(coin_files, 12, 4000, j, i);
+                t_anim *coin_anim = init_anim(coin_files, 12, 8000, j, i);
                 data->anims[data->anim_count++] = coin_anim;
             }   
             else
@@ -176,7 +176,7 @@ int animate_all(t_minilibx *data)
 int main(void)
 {
     t_map map;
-    map = map_constructor("srcs/map/hello.txt");
+    map = map_constructor("srcs/map/hello.ber");
     printf("Height: %d\nWIDTH: %d\n", map.height, map.width);
     t_minilibx data;
     data = minilibx_constructor(&map, map.height * 32, map.width * 32, "Test");
@@ -197,17 +197,11 @@ int main(void)
     }
 
     draw_map(&data);
-    // attach keyboard hook (2 = KeyPress event)
     mlx_hook(data.win, 2, 1L<<0, handle_key, &data);
-
-    // also optional: handle window close button (17 = DestroyNotify)
     mlx_hook(data.win, 17, 0, close_window, &data);
-
     mlx_loop_hook(data.mlx, animate_all, &data);
-
     mlx_loop(data.mlx);
 
     minilibx_destructor(&data);
-    map_destructor(&map);
     return (0);
 }

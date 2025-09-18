@@ -25,7 +25,8 @@ typedef enum e_error_type
     NO_PLAYER,
     NO_EXIT,
     NO_COLLECTIBLE,
-    MEMORY_ALLOCATION_FAILURE
+    MEMORY_ALLOCATION_FAILURE, 
+    NOT_AVAILABLE
 }   t_error_type;
 
 typedef struct s_map
@@ -60,6 +61,9 @@ t_map   map_constructor(char *filename);
 void    map_destructor(t_map *map);
 void    error_type(int error_type);
 void	get_grid_stats(t_map *map);
+int     ft_strlen_no_nl(const char *str);
+int     check_solvable(t_map *map);
+
 
 
 #endif
