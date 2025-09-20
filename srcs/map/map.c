@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:10:18 by mhdeeb            #+#    #+#             */
-/*   Updated: 2025/09/19 23:00:13 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:48:47 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	error_type2(int error_type)
 		ft_printf("Error: Unknown error.\n");
 }
 
-void	error_type(int error_type, t_map *map)
+int	error_type(int error_type, t_map *map)
 {
 	(void)map;
 	if (error_type == INVALID_FILE)
@@ -87,6 +87,8 @@ void	error_type(int error_type, t_map *map)
 		ft_printf("Error: Invalid line in map.\n");
 	else if (error_type == MUTLIPLE_EXITS)
 		ft_printf("Error: Multiple exits defined in map.\n");
+	else if (error_type == INVALID_NUMBER_OF_ARGUMENTS)
+		ft_printf("Error: Invalid number of arguments.\n");
 	else
 		error_type2(error_type);
 	exit(EXIT_FAILURE);

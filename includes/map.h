@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:01:53 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 17:18:36 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:47:26 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef enum e_error_type
 	INVALID_LINE_LENGTH,
 	INVALID_CHARACTER,
 	INVALID_LINE,
+	INVALID_NUMBER_OF_ARGUMENTS,
 	MULTIPLE_PLAYERS,
 	MUTLIPLE_EXITS,
 	NO_PLAYER,
@@ -69,7 +70,7 @@ int		walls_checker(t_map *map);
 int		map_validator(t_map *map);
 t_map	map_constructor(char *filename);
 void	map_destructor(t_map *map);
-void	error_type(int error_type, t_map *map);
+int		error_type(int error_type, t_map *map);
 void	get_grid_stats(t_map *map);
 int		ft_strlen_no_nl(const char *str);
 int		check_solvable(t_map *map);

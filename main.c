@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:49:10 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 17:28:37 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:48:53 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,13 @@ int	main(int argc, char **argv)
 	t_minilibx	data;
 
 	if (argc != 2)
-	{
-		ft_printf("Error\nInvalid number of arguments.\n");
-		return (1);
-	}
+		return (error_type(INVALID_NUMBER_OF_ARGUMENTS, NULL));
 	map = map_constructor(argv[1]);
 	data = mlx_cons(&map, map.height * 32, map.width * 32, "Test");
 	data.mlx = mlx_init();
-	if (data.mlx)
-		data.win = mlx_new_window(data.mlx, data.width, data.height, data.label);
+	if (!data.mlx)
+		return (error_type(MEMORY_ALLOCATION_FAILURE, &map));
+	data.win = mlx_new_window(data.mlx, data.width, data.height, data.label);
 	if (!data.mlx || !data.win)
 	{
 		minilibx_destructor(&data);
