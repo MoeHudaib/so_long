@@ -15,34 +15,32 @@
 int	close_window(t_minilibx *data)
 {
 	minilibx_destructor(data);
-	return (exit(0));
+	exit(0);
+	return (0);
 }
 
-int game_over(t_minilibx *data, int win)
+int	game_over(t_minilibx *data, int win)
 {
-    if (win)
-        write(1, "You Win!\n", 9);
-    else
-        write(1, "Game Over!\n", 11);
-
-    minilibx_destructor(data);
-    exit(0); // clean exit
-    return (0);
+	if (win)
+		write(1, "You Win!\n", 9);
+	else
+		write(1, "Game Over!\n", 11);
+	minilibx_destructor(data);
+	exit(0);
+	return (0);
 }
 
-
-
-int draw_image_96x32(t_minilibx *data, char *filename, int x, int y)
+int	draw_image_96x32(t_minilibx *data, char *filename, int x, int y)
 {
-    if (!data || !data->mlx || !data->win)
-        return (INVALID_FILE);
+	t_image_data	sprite;
 
-    t_image_data sprite = load_and_scale_xpm_96x32(data->mlx, filename);
-    if (sprite.img)
-    {
-        mlx_put_image_to_window(data->mlx, data->win, sprite.img, x, y);
-        mlx_destroy_image(data->mlx, sprite.img);
-    }
-
-    return (0);
+	if (!data || !data->mlx || !data->win)
+		return (INVALID_FILE);
+	sprite = load_and_scale_xpm_96x32(data->mlx, filename);
+	if (sprite.img)
+	{
+		mlx_put_image_to_window(data->mlx, data->win, sprite.img, x, y);
+		mlx_destroy_image(data->mlx, sprite.img);
+	}
+	return (0);
 }

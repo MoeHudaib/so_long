@@ -4,7 +4,8 @@ CFLAGS = -g
 MLX_FLAGS = -Lminilibx-linux -lmlx_Linux -lXext -lX11 -lm
 NAME=so_long
 # Source files
-SRCS = srcs/game/game.c \
+SRCS = main.c \
+       srcs/game/game.c \
 	   srcs/game/game_init.c \
 	   srcs/game/game_utils.c \
 	   srcs/game/game_movement.c \

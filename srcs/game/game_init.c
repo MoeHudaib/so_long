@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:00:36 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 13:00:38 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 17:25:23 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	free_minilibx(t_minilibx *data)
 	free_anims(data);
 }
 
-t_minilibx	minilibx_constructor(t_map *map, int height, int width, char *label)
+t_minilibx	mlx_cons(t_map *map, int height, int width, char *label)
 {
 	t_minilibx	data;
 

@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 21:06:23 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 02:00:30 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 15:40:13 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	draw_coin(t_minilibx *data, int j, int i)
 	coin_files[4] = "srcs/images/coin/C5.xpm";
 	draw_image_32(data, "srcs/images/coin/C1.xpm", j * 32, i * 32);
 	idx = data->anim_count;
-	data->anims[idx] = init_anim(coin_files, 5, 15000, j, i);
+	data->anims[idx] = init_anim(coin_files, 5, j, i);
 	data->anim_count++;
 }
 
@@ -58,7 +58,7 @@ static void	draw_enemy(t_minilibx *data, int j, int i)
 	enemy_files[11] = "srcs/images/enemy/N12.xpm";
 	draw_image_32(data, "srcs/images/enemy/N1.xpm", j * 32, i * 32);
 	idx = data->anim_count;
-	data->anims[idx] = init_anim(enemy_files, 12, 8000, j, i);
+	data->anims[idx] = init_anim(enemy_files, 12, j, i);
 	data->anim_count++;
 }
 

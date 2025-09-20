@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 21:23:05 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 13:26:56 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 16:08:24 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 int	free_animations(t_minilibx *data, int x, int y)
 {
-	int i;
-	int j;
+	int		i;
+	int		j;
+	t_anim	*anim;
 
 	i = 0;
 	while (i < data->anim_count)
 	{
-		t_anim *anim = data->anims[i];
+		anim = data->anims[i];
 		if (anim && anim->x == x && anim->y == y)
 		{
 			free(anim->frames);
@@ -68,8 +69,8 @@ void	handle_enemy(t_minilibx *data, int new_x, int new_y)
 
 void	handle_rest(t_minilibx *data, int new_x, int new_y, int movement_type)
 {
-	int old_x;
-	int old_y;
+	int	old_x;
+	int	old_y;
 
 	if (!data)
 		return ;
@@ -92,30 +93,31 @@ void	handle_rest(t_minilibx *data, int new_x, int new_y, int movement_type)
 		right(data, old_x, old_y);
 }
 
-void move_player(t_minilibx *data, int dx, int dy, int movement_type)
+void	move_player(t_minilibx *data, int dx, int dy, int movement_type)
 {
-    int old_x;
-    int old_y;
-    int new_x;
-    int new_y;
-    
-    old_x = data->map.player.position.x;
-    old_y = data->map.player.position.y;
-    new_x = old_x + dx;
-    new_y = old_y + dy;
-    if (data->map.grid[new_y][new_x] == '1') // wall
-        return;
-    else if (data->map.grid[new_y][new_x] == 'E') // exit
-    {
-        if (data->map.collectibles == 0)
-            game_over(data, 1);
-    }
-    else if (data->map.grid[new_y][new_x] == 'N') // enemy
-        handle_enemy(data, new_x, new_y);
-    else if (data->map.grid[new_y][new_x] == 'C') // collectible
-    {
-        data->map.collectibles--;
-        free_animations(data, new_x, new_y);
-    }
-    handle_rest(data, new_x, new_y, movement_type);
+	int	old_x;
+	int	old_y;
+	int	new_x;
+	int	new_y;
+
+	old_x = data->map.player.position.x;
+	old_y = data->map.player.position.y;
+	new_x = old_x + dx;
+	new_y = old_y + dy;
+	if (data->map.grid[new_y][new_x] == '1')
+		return ;
+	else if (data->map.grid[new_y][new_x] == 'E')
+	{
+		if (data->map.collectibles == 0)
+			game_over(data, 1);
+	}
+	else if (data->map.grid[new_y][new_x] == 'N')
+		handle_enemy(data, new_x, new_y);
+	else if (data->map.grid[new_y][new_x] == 'C')
+	{
+		data->map.collectibles--;
+		free_animations(data, new_x, new_y);
+	}
+	handle_rest(data, new_x, new_y, movement_type);
+	print_steps(data);
 }
