@@ -76,7 +76,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 
 	if (!s2)
 		return (s1);
-	res = ft_calloc_gnl(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1, sizeof(char));
+	res = ft_calloc_gnl(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1, 1);
 	if (!res)
 	{
 		free(s1);

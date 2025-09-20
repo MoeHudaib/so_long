@@ -1,141 +1,79 @@
-#include <stdlib.h>
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dfs.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/19 15:18:50 by mohammad          #+#    #+#             */
+/*   Updated: 2025/09/20 12:51:36 by mohammad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "map.h"
 
-char *ft_strcpy(char *dest, const char *src)
+static void	dfs(int **visited, t_map *map, t_point pos, t_state *st)
 {
-    int i = 0;
-    while (src[i] != '\0')
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[i] = '\0';
-    return (dest);
+	if (pos.x < 0 || pos.x >= map->width || pos.y < 0 || pos.y >= map->height)
+		return ;
+	if (visited[pos.y][pos.x] || map->grid[pos.y][pos.x] == '1')
+		return ;
+	visited[pos.y][pos.x] = 1;
+	if (map->grid[pos.y][pos.x] == 'E')
+		st->exit_found = 1;
+	if (map->grid[pos.y][pos.x] == 'C')
+		st->collectibles_found++;
+	dfs(visited, map, (t_point){pos.x + 1, pos.y}, st);
+	dfs(visited, map, (t_point){pos.x - 1, pos.y}, st);
+	dfs(visited, map, (t_point){pos.x, pos.y + 1}, st);
+	dfs(visited, map, (t_point){pos.x, pos.y - 1}, st);
 }
 
-int ft_strlen1(const char *s)
+static void	free_visited(int **visited, int height)
 {
-    int i = 0;
-    while (s[i])
-        i++;
-    return (i);
+	int	i;
+
+	i = 0;
+	while (i < height)
+		free(visited[i++]);
+	free(visited);
 }
 
-char **copy_grid(char **grid)
+static int	validate_result(t_map *map, t_state st)
 {
-    int i, rows;
-    char **copy;
-
-    if (!grid)
-        return (NULL);
-    rows = 0;
-    while (grid[rows])
-        rows++;
-
-    copy = malloc(sizeof(char *) * (rows + 1));
-    if (!copy)
-        return (NULL);
-
-    for (i = 0; i < rows; i++)
-    {
-        int len = ft_strlen1(grid[i]);
-        copy[i] = malloc(len + 1);
-        if (!copy[i])
-        {
-            while (--i >= 0)
-                free(copy[i]);
-            free(copy);
-            return (NULL);
-        }
-        ft_strcpy(copy[i], grid[i]);
-    }
-    copy[rows] = NULL;
-    return (copy);
+	if (!st.exit_found)
+	{
+		map_destructor(map);
+		return (NO_EXIT);
+	}
+	if (map->collectibles <= 0 || st.collectibles_found != map->collectibles)
+	{
+		map_destructor(map);
+		return (NO_COLLECTIBLE);
+	}
+	return (0);
 }
 
-/*
-  DFS traversal:
-- Explore all directions
-- Mark visited[][]
-- Detect exit + collectibles
-*/
-void dfs(int **visited, char **grid, int x, int y, int width, int height,
-         int *exit_found, int *collectibles_found)
+int	check_solvable(t_map *map)
 {
-    if (x < 0 || x >= width || y < 0 || y >= height)
-        return;
-    if (visited[y][x])
-        return;
-    if (grid[y][x] == '1')
-        return;
+	int		**visited;
+	int		i;
+	t_state	st;
 
-    visited[y][x] = 1;
-
-    if (grid[y][x] == 'E')
-        *exit_found = 1;
-    if (grid[y][x] == 'C')
-        (*collectibles_found)++;
-
-    dfs(visited, grid, x + 1, y, width, height, exit_found, collectibles_found);
-    dfs(visited, grid, x - 1, y, width, height, exit_found, collectibles_found);
-    dfs(visited, grid, x, y + 1, width, height, exit_found, collectibles_found);
-    dfs(visited, grid, x, y - 1, width, height, exit_found, collectibles_found);
+	st.exit_found = 0;
+	st.collectibles_found = 0;
+	visited = malloc(sizeof(int *) * map->height);
+	if (!visited)
+		return (MEMORY_ALLOCATION_FAILURE);
+	i = 0;
+	while (i < map->height)
+	{
+		visited[i] = calloc(map->width, sizeof(int));
+		if (!visited[i])
+			return (MEMORY_ALLOCATION_FAILURE);
+		i++;
+	}
+	dfs(visited, map, map->player.position, &st);
+	free_visited(visited, map->height);
+	return (validate_result(map, st));
 }
-
-int free_(t_map *map, int **visited, int exit_found, int clctbls_f)
-{
-
-    for (int i = 0; i < map->height; i++)
-        free(visited[i]);
-    free(visited);
-
-    if (!exit_found)
-        return (NO_EXIT);
-    if (map->collectibles <= 0 || clctbls_f != map->collectibles)
-        return (NO_COLLECTIBLE);
-    return (0);
-}
-
-int set_vals(int *x1, int *x2, int *x3)
-{
-    *x1 = 0;
-    *x2 = -1;
-    *x3 = 0;
-    return (0);
-}
-
-int check_solvable(t_map *map)
-{
-    int **visited;
-    int exit_found;
-    int i;
-    int collectibles_found;
-
-    set_vals(&exit_found, &i, &collectibles_found);
-    visited = malloc(sizeof(int *) * map->height);
-    if (!visited)
-        return (MEMORY_ALLOCATION_FAILURE);
-    while (++i < map->height)
-    {
-        visited[i] = calloc(map->width, sizeof(int));
-        if (!visited[i])
-            return (MEMORY_ALLOCATION_FAILURE);
-    }
-    dfs(visited, map->grid,
-        map->player.position.x,
-        map->player.position.y,
-        map->width,
-        map->height,
-        &exit_found,
-        &collectibles_found);
-    return (free_(map, visited, exit_found, collectibles_found));
-}
-
-// int main()
-// {
-//     t_map map = map_constructor("srcs/map/hello.txt");
-//     int c = check_solvable(&map);
-//     printf("%d\n", c);
-//     return (0);
-// }

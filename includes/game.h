@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   game.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/20 02:02:07 by mohammad          #+#    #+#             */
+/*   Updated: 2025/09/20 13:26:12 by mohammad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -67,10 +79,10 @@ int close_window(t_minilibx *data);
 
 /*		Game Movement	*/
 void	    move_player(t_minilibx *data, int dx, int dy, int movement_type);
-void        down(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-void        left(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-void        right(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
-void        up(t_minilibx *data, int old_x, int old_y, int new_x, int new_y);
+void        down(t_minilibx *data, int old_x, int old_y);
+void        left(t_minilibx *data, int old_x, int old_y);
+void        right(t_minilibx *data, int old_x, int old_y);
+void        up(t_minilibx *data, int old_x, int old_y);
 t_anim      *init_anim(char **files, int frame_count, int speed, int x, int y);
 void        render_anim(t_minilibx *data, t_anim *anim);
 void        update_anim(t_minilibx *data, t_anim *anim);

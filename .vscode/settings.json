@@ -1,18 +1,6 @@
 {
     "files.associations": {
-        "untitled document 1": "c",
-        "string.h": "c",
-        "enemy.h": "c",
-        "map.h": "c",
-        "stdlib.h": "c",
         "get_next_line.h": "c",
-        "libft.h": "c",
-        "player.h": "c",
-        "game.h": "c",
-        "mlx.h": "c",
-        "mlx_int.h": "c",
-        "point.h": "c",
-        "cstdlib": "c",
-        "stdio.h": "c"
+        "map.h": "c"
     }
 }

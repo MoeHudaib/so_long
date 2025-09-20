@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/20 02:01:53 by mohammad          #+#    #+#             */
+/*   Updated: 2025/09/20 12:48:47 by mohammad         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MAP_H
 #define MAP_H
 #include "player.h"
 #include "input.h"
 #include "enemy.h"
 #include "./libft/libft.h"
+#include "./ft_printf/ft_printf.h"
 #include <fcntl.h>
 
 #include <stdio.h>
@@ -22,6 +35,7 @@ typedef enum e_error_type
     INVALID_CHARACTER,
     INVALID_LINE,
     MULTIPLE_PLAYERS,
+    MUTLIPLE_EXITS,
     NO_PLAYER,
     NO_EXIT,
     NO_COLLECTIBLE,
@@ -43,12 +57,11 @@ typedef struct s_map
     int        enemy_count;
 }   t_map;
 
-// Function prototypes
-// load map from file
-// validate map
-// free map resources
-// render map
-// update map state
+typedef struct s_state
+{
+	int exit_found;
+	int collectibles_found;
+}	t_state;
 
 int get_map_hw(const char *filename, t_map *map);
 
@@ -59,10 +72,11 @@ int	walls_checker(t_map *map);
 int map_validator(t_map *map);
 t_map   map_constructor(char *filename);
 void    map_destructor(t_map *map);
-void    error_type(int error_type);
+void    error_type(int error_type, t_map *map);
 void	get_grid_stats(t_map *map);
 int     ft_strlen_no_nl(const char *str);
 int     check_solvable(t_map *map);
+int	is_in_set(char c, char *set);
 
 
 
