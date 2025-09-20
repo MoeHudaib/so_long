@@ -77,6 +77,8 @@ int	get_map_hw(const char *filename, t_map *map)
 	status = read_hw(fd, map);
 	if (map->height >= 30 || map->width >= 60)
 		return (INVALID_WIDTH);
+	if (map->height == map->width)
+		return (INVALID_WIDTH);
 	close(fd);
 	map->exit_count = 0;
 	return (status);
