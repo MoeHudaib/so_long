@@ -51,11 +51,11 @@ void	map_destructor(t_map *map)
 static void	error_type2(int error_type)
 {
 	if (error_type == INVALID_WIDTH)
-		ft_printf("Error: Invalid map width.\n");
+		ft_printf("Error: Map must be rectangular.\n");
 	else if (error_type == INVALID_HEIGHT)
-		ft_printf("Error: Invalid map height.\n");
+		ft_printf("Error: Map must be rectangular.\n");
 	else if (error_type == INVALID_LINE_LENGTH)
-		ft_printf("Error: Inconsistent line length in map.\n");
+		ft_printf("Error: Map must be rectangular.\n");
 	else if (error_type == INVALID_CHARACTER)
 		ft_printf("Error: Invalid character found in map.\n");
 	else if (error_type == MULTIPLE_PLAYERS)

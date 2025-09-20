@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 22:00:07 by mhdeeb            #+#    #+#             */
-/*   Updated: 2025/09/12 19:15:40 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:45:22 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*ft_strdup_gnl(const char *s)
 	size_t	i;
 	char	*dup;
 
+	if (!s || !*s)
+		return (NULL);
 	dup = ft_calloc_gnl(ft_strlen_gnl(s) + 1, sizeof(char));
 	if (!dup)
 		return (NULL);

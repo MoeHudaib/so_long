@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = cc
-CFLAGS = -g 
+CFLAGS = -Wall -Wextra -Werror -g 
 MLX_FLAGS = -Lminilibx-linux -lmlx_Linux -lXext -lX11 -lm
 NAME=so_long
 # Source files

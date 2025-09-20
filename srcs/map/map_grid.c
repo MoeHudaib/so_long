@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:23:00 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/19 22:28:25 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 19:41:42 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char	*remove_nl(char *line)
 static char	**set_grid(t_map *map, int fd, char *line)
 {
 	char	**grid;
-	int		i;
 
 	grid = malloc(sizeof(char *) * (map->height + 1));
 	if (!grid)
