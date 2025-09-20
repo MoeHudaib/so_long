@@ -1,10 +1,24 @@
 {
-   ignore_mlx_x11_uninit
+   mlx_x11_writev_bug
    Memcheck:Param
    writev(vector[0])
    fun:writev
-   fun:*
-   fun:*
-   fun:*
    obj:/usr/lib/x86_64-linux-gnu/libxcb.so.*
+}
+
+{
+   mlx_x11_send_bug
+   Memcheck:Addr8
+   fun:_XSend
+   fun:*
+   obj:/usr/lib/x86_64-linux-gnu/libX11.so.*
+}
+
+{
+   mlx_x11_open_display_calloc
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:calloc
+   fun:XOpenDisplay
+   obj:/usr/lib/x86_64-linux-gnu/libX11.so.*
 }
