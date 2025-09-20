@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:00:52 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 02:00:53 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:17:29 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	close_window(t_minilibx *data)
 {
-	minilibx_destructor(data);
+	minilibx_destructor(data, 0);
 	exit(0);
 	return (0);
 }
@@ -25,7 +25,7 @@ int	game_over(t_minilibx *data, int win)
 		write(1, "You Win!\n", 9);
 	else
 		write(1, "Game Over!\n", 11);
-	minilibx_destructor(data);
+	minilibx_destructor(data, 0);
 	exit(0);
 	return (0);
 }

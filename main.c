@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 15:49:10 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 17:48:53 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:24:29 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,15 @@ int	main(int argc, char **argv)
 	data = mlx_cons(&map, map.height * 32, map.width * 32, "Test");
 	data.mlx = mlx_init();
 	if (!data.mlx)
-		return (error_type(MEMORY_ALLOCATION_FAILURE, &map));
+		minilibx_destructor(&data, MEMORY_ALLOCATION_FAILURE);
 	data.win = mlx_new_window(data.mlx, data.width, data.height, data.label);
-	if (!data.mlx || !data.win)
-	{
-		minilibx_destructor(&data);
-		return (1);
-	}
+	if (!data.win)
+		minilibx_destructor(&data, MEMORY_ALLOCATION_FAILURE);
 	draw_map(&data);
 	mlx_hook(data.win, 2, 1L << 0, handle_key, &data);
 	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_loop_hook(data.mlx, animate_all, &data);
 	mlx_loop(data.mlx);
-	minilibx_destructor(&data);
+	minilibx_destructor(&data, 0);
 	return (0);
 }

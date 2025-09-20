@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 21:06:23 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 15:40:13 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:39:49 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ int	draw_map(t_minilibx *data)
 	if (!data || !data->map.grid)
 		return (INVALID_FILE);
 	i = 0;
-	while (data->map.grid[i])
+	while (i < data->map.height && data->map.grid[i])
 	{
 		j = 0;
-		while (data->map.grid[i][j])
+		while (j < data->map.width && data->map.grid[i][j])
 		{
 			c = data->map.grid[i][j];
 			if (i == 0 && j == 3)

@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:40:33 by mhdeeb            #+#    #+#             */
-/*   Updated: 2025/09/19 23:10:23 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:36:45 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	get_map_hw(const char *filename, t_map *map)
 	if (fd < 0)
 		return (INVALID_FILE);
 	status = read_hw(fd, map);
+	if (map->height >= 30 || map->width >= 60)
+		return (INVALID_WIDTH);
 	close(fd);
 	map->exit_count = 0;
 	return (status);

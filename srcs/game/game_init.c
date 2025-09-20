@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:00:36 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 17:25:23 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:12:41 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_minilibx	mlx_cons(t_map *map, int height, int width, char *label)
 	return (data);
 }
 
-void	minilibx_destructor(t_minilibx *data)
+void	minilibx_destructor(t_minilibx *data, int err_type)
 {
 	if (!data)
 		return ;
@@ -81,6 +81,8 @@ void	minilibx_destructor(t_minilibx *data)
 	{
 		free_minilibx(data);
 	}
+	if (err_type)
+		error_type(err_type, NULL);
 }
 
 int	handle_key(int keycode, t_minilibx *data)

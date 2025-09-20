@@ -43,7 +43,8 @@ all: $(SRCS) $(LIBFT)
 	$(CC) $(CFLAGS) $(SRCS) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o $(NAME)
 
 memory: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --errors-for-leak-kinds=definite,possible -s ./$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --errors-for-leak-kinds=definite,possible --suppressions=minilibx-linux/mlx.supp ./$(NAME) maps/test.ber
+
 map:$(MAP) $(LIBFT)
 	$(CC) $(CFLAGS) $(MAP) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o kk
 

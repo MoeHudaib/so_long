@@ -1,0 +1,10 @@
+{
+   ignore_mlx_x11_uninit
+   Memcheck:Param
+   writev(vector[0])
+   fun:writev
+   fun:*
+   fun:*
+   fun:*
+   obj:/usr/lib/x86_64-linux-gnu/libxcb.so.*
+}

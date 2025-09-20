@@ -6,7 +6,7 @@
 /*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:02:07 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 17:25:33 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/20 18:13:25 by mohammad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef t_image_data	t_d;
 
 /*		minilibx Con/Des	*/
 t_g		mlx_cons(t_map *map, int height, int width, char *label);
-void	minilibx_destructor(t_minilibx *data);
+void	minilibx_destructor(t_minilibx *data, int err_type);
 
 /*		xpm processing		*/
 int		draw_image_32(t_minilibx *data, char *filename, int x, int y);
