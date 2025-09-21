@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 21:06:23 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 18:39:49 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 16:13:46 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	draw_coin(t_minilibx *data, int j, int i)
 {
 	char	*coin_files[5];
 	int		idx;
+	t_anim	*anim;
 
 	coin_files[0] = "srcs/images/coin/C1.xpm";
 	coin_files[1] = "srcs/images/coin/C2.xpm";
@@ -35,14 +36,19 @@ static void	draw_coin(t_minilibx *data, int j, int i)
 	coin_files[4] = "srcs/images/coin/C5.xpm";
 	draw_image_32(data, "srcs/images/coin/C1.xpm", j * 32, i * 32);
 	idx = data->anim_count;
-	data->anims[idx] = init_anim(coin_files, 5, j, i);
-	data->anim_count++;
+	anim = init_anim(coin_files, 5, j, i);
+	if (anim)
+	{
+		data->anims[idx] = anim;
+		data->anim_count++;
+	}
 }
 
 static void	draw_enemy(t_minilibx *data, int j, int i)
 {
 	char	*enemy_files[12];
 	int		idx;
+	t_anim	*anim;
 
 	enemy_files[0] = "srcs/images/enemy/N1.xpm";
 	enemy_files[1] = "srcs/images/enemy/N2.xpm";
@@ -58,8 +64,12 @@ static void	draw_enemy(t_minilibx *data, int j, int i)
 	enemy_files[11] = "srcs/images/enemy/N12.xpm";
 	draw_image_32(data, "srcs/images/enemy/N1.xpm", j * 32, i * 32);
 	idx = data->anim_count;
-	data->anims[idx] = init_anim(enemy_files, 12, j, i);
-	data->anim_count++;
+	anim = init_anim(enemy_files, 12, j, i);
+	if (anim)
+	{
+		data->anims[idx] = anim;
+		data->anim_count++;
+	}
 }
 
 static void	draw_tile(t_minilibx *data, char c, int j, int i)

@@ -6,29 +6,55 @@
 /*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:01:04 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/21 12:20:05 by mhdeeb           ###   ########.fr       */
+/*   Updated: 2025/09/21 16:15:10 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "game.h"
 
+#include <stdlib.h>
+#include <string.h>
+
+#include <stdlib.h>
+#include <string.h>
+
+static char	**init_anim_frames(char **files, int frame_count)
+{
+	char	**frames;
+	int		i;
+
+	frames = malloc(sizeof(char *) * frame_count);
+	if (!frames)
+		return (NULL);
+	i = 0;
+	while (i < frame_count)
+	{
+		frames[i] = files[i];
+		if (!frames[i])
+		{
+			while (--i >= 0)
+				free(frames[i]);
+			free(frames);
+			return (NULL);
+		}
+		i++;
+	}
+	return (frames);
+}
+
 t_anim	*init_anim(char **files, int frame_count, int x, int y)
 {
 	t_anim	*anim;
-	int		i;
 
 	anim = malloc(sizeof(t_anim));
 	if (!anim)
 		return (NULL);
-	anim->frames = malloc(sizeof(char *) * frame_count);
+	anim->frames = init_anim_frames(files, frame_count);
 	if (!anim->frames)
 	{
 		free(anim);
 		return (NULL);
 	}
-	i = -1;
-	while (++i < frame_count)
-		anim->frames[i] = files[i];
 	anim->frame_count = frame_count;
 	anim->frame = 0;
 	anim->speed = 12000;
@@ -55,26 +81,5 @@ void	update_anim(t_minilibx *data, t_anim *anim)
 		anim->counter = 0;
 		anim->frame = (anim->frame + 1) % anim->frame_count;
 		render_anim(data, anim);
-	}
-}
-
-void	walk_through_exit(int new_x, int new_y, t_minilibx *data)
-{
-	int	x;
-	int	y;
-
-	if (data->map.grid[new_y][new_x] == 'E')
-	{
-		if (data->map.collectibles == 0)
-			game_over(data, 1);
-		data->map.exit_pose.x = new_x;
-		data->map.exit_pose.y = new_y;
-	}
-	x = data->map.exit_pose.x;
-	y = data->map.exit_pose.y;
-	if (new_x == x && new_y == y)
-	{
-		if (data->map.collectibles == 0)
-			game_over(data, 1);
 	}
 }

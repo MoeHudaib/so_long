@@ -6,7 +6,7 @@
 /*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:01:53 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/21 10:18:04 by mhdeeb           ###   ########.fr       */
+/*   Updated: 2025/09/21 16:16:17 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ int		ft_strlen_no_nl(const char *str);
 int		check_solvable(t_map *map);
 int		is_in_set(char c, char *set);
 void	free_tokens_i(char **grid, int i);
+int		free_visit(int **visited, int i, t_map *map);
 
 #endif

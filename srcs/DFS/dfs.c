@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:18:50 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 12:51:36 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 15:45:05 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,16 @@ int	check_solvable(t_map *map)
 	st.collectibles_found = 0;
 	visited = malloc(sizeof(int *) * map->height);
 	if (!visited)
+	{
+		map_destructor(map);
 		return (MEMORY_ALLOCATION_FAILURE);
+	}
 	i = 0;
 	while (i < map->height)
 	{
 		visited[i] = calloc(map->width, sizeof(int));
 		if (!visited[i])
-			return (MEMORY_ALLOCATION_FAILURE);
+			return (free_visit(visited, map->height - i, map));
 		i++;
 	}
 	dfs(visited, map, map->player.position, &st);
