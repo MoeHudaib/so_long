@@ -48,8 +48,8 @@ all: $(NAME)
 memory: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --errors-for-leak-kinds=definite,possible --suppressions=minilibx-linux/mlx.supp ./$(NAME) maps/testt.ber
 
-map:$(MAP) $(LIBFT)
-	$(CC) $(CFLAGS) $(MAP) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o kk
+#map:$(MAP) $(LIBFT)
+#	$(CC) $(CFLAGS) $(MAP) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o kk
 
 clean:
 	
