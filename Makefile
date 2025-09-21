@@ -1,7 +1,7 @@
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g 
-MLX_FLAGS = -Lminilibx-linux -lmlx_Linux -lXext -lX11 -lm
+MLX_FLAGS = -L. -lmlx -lXext -lX11 -lm
 NAME=so_long
 # Source files
 SRCS = main.c \
@@ -38,18 +38,12 @@ MAP =  srcs/map/map.c \
 LIBFT = includes/libft/libft.a includes/ft_printf/libftprintf.a
 
 # Includes
-INCLUDES = -Iincludes -Iminilibx-linux
+INCLUDES = -Iincludes
+
 $(NAME): $(SRCS) $(LIBFT)
 	$(CC) $(CFLAGS) $(SRCS) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o $(NAME)
 
-
 all: $(NAME)
-
-memory: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --errors-for-leak-kinds=definite,possible --suppressions=minilibx-linux/mlx.supp ./$(NAME) maps/testt.ber
-
-#map:$(MAP) $(LIBFT)
-#	$(CC) $(CFLAGS) $(MAP) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o kk
 
 clean:
 	

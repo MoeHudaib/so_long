@@ -14,8 +14,7 @@
 # define GAME_H
 
 # include "map.h"
-# include "../minilibx-linux/mlx.h"
-# include "../minilibx-linux/mlx_int.h"
+# include <mlx.h>
 
 typedef struct s_anim
 {
