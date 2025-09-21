@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:01:53 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 17:47:26 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 10:18:04 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_map
 	int			player_count;
 	int			exit_count;
 	t_player	player;
+	t_point		exit_pose;
 	t_point		sb_posistion;
 	int			enemy_count;
 }	t_map;
@@ -65,7 +66,6 @@ typedef struct s_state
 int		get_map_hw(const char *filename, t_map *map);
 void	free_tokens(char **tokens);
 int		set_map_grid(const char *filename, t_map *map);
-void	free_grid(char **grid, int count);
 int		walls_checker(t_map *map);
 int		map_validator(t_map *map);
 t_map	map_constructor(char *filename);
@@ -75,5 +75,6 @@ void	get_grid_stats(t_map *map);
 int		ft_strlen_no_nl(const char *str);
 int		check_solvable(t_map *map);
 int		is_in_set(char c, char *set);
+void	free_tokens_i(char **grid, int i);
 
 #endif

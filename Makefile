@@ -19,6 +19,7 @@ SRCS = main.c \
 	   srcs/map/get_next_line.c \
 	   srcs/map/get_next_line_utils.c \
 	   srcs/map/map_grid.c \
+	   srcs/map/free_grid.c \
 	   srcs/map/map_validator.c \
 	   srcs/map/map_validator_utils.c \
 	   srcs/DFS/dfs.c \

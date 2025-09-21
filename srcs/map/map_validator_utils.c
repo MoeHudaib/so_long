@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_validator_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:37:50 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/19 23:09:51 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 10:05:28 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_characters(t_map *map, int i, int j, int *p_flag)
 	{
 		point.x = j;
 		point.y = i;
-		player = init_player(point, 100);
+		player = init_player(point, 1000);
 		map->player = player;
 		*p_flag = 1;
 	}

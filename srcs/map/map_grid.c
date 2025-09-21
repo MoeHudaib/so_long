@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_grid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 14:23:00 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 19:41:42 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 09:33:48 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	fill_grid(t_map *map, int fd, char *line)
 		if (!map->grid[i])
 		{
 			free(line);
-			free_tokens(map->grid);
+			free_tokens_i(map->grid, i);
 			close(fd);
 			return (MEMORY_ALLOCATION_FAILURE);
 		}

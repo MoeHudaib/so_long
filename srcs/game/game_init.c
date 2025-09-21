@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:00:36 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 18:12:41 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 12:17:02 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ t_minilibx	mlx_cons(t_map *map, int height, int width, char *label)
 	data.mlx = NULL;
 	data.win = NULL;
 	data.anim_count = 0;
-	data.anims = malloc(sizeof(t_anim *) * 25);
+	data.anims = malloc(sizeof(t_anim *) * (map->enemy_count
+				+ map->collectibles + 1));
 	if (!data.anims)
 		return (data);
 	return (data);

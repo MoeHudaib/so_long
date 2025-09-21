@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:01:04 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 16:12:08 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 12:20:05 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,26 @@ void	update_anim(t_minilibx *data, t_anim *anim)
 		anim->counter = 0;
 		anim->frame = (anim->frame + 1) % anim->frame_count;
 		render_anim(data, anim);
+	}
+}
+
+void	walk_through_exit(int new_x, int new_y, t_minilibx *data)
+{
+	int	x;
+	int	y;
+
+	if (data->map.grid[new_y][new_x] == 'E')
+	{
+		if (data->map.collectibles == 0)
+			game_over(data, 1);
+		data->map.exit_pose.x = new_x;
+		data->map.exit_pose.y = new_y;
+	}
+	x = data->map.exit_pose.x;
+	y = data->map.exit_pose.y;
+	if (new_x == x && new_y == y)
+	{
+		if (data->map.collectibles == 0)
+			game_over(data, 1);
 	}
 }

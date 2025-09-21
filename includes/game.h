@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:02:07 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 18:13:25 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 12:23:15 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ void	update_anim(t_minilibx *data, t_anim *anim);
 void	print_steps(t_minilibx *data);
 int		animate_all(t_minilibx *data);
 t_anim	*init_anim(char **files, int frame_count, int x, int y);
+void	walk_through_exit(int new_x, int new_y, t_minilibx *data);
 
 #endif

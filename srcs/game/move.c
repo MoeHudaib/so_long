@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 21:23:05 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/20 16:08:24 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 12:02:53 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,6 @@ void	move_player(t_minilibx *data, int dx, int dy, int movement_type)
 	new_y = old_y + dy;
 	if (data->map.grid[new_y][new_x] == '1')
 		return ;
-	else if (data->map.grid[new_y][new_x] == 'E')
-	{
-		if (data->map.collectibles == 0)
-			game_over(data, 1);
-	}
 	else if (data->map.grid[new_y][new_x] == 'N')
 		handle_enemy(data, new_x, new_y);
 	else if (data->map.grid[new_y][new_x] == 'C')
@@ -118,6 +113,7 @@ void	move_player(t_minilibx *data, int dx, int dy, int movement_type)
 		data->map.collectibles--;
 		free_animations(data, new_x, new_y);
 	}
+	walk_through_exit(new_x, new_y, data);
 	handle_rest(data, new_x, new_y, movement_type);
 	print_steps(data);
 }
