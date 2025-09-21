@@ -6,7 +6,7 @@
 /*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 15:18:50 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/21 15:45:05 by mhdeeb           ###   ########.fr       */
+/*   Updated: 2025/09/21 16:34:35 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int	check_solvable(t_map *map)
 	i = 0;
 	while (i < map->height)
 	{
-		visited[i] = calloc(map->width, sizeof(int));
+		visited[i] = ft_calloc(map->width, sizeof(int));
 		if (!visited[i])
-			return (free_visit(visited, map->height - i, map));
+			return (free_visit(visited, i, map));
 		i++;
 	}
 	dfs(visited, map, map->player.position, &st);
