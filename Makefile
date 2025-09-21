@@ -39,12 +39,14 @@ LIBFT = includes/libft/libft.a includes/ft_printf/libftprintf.a
 
 # Includes
 INCLUDES = -Iincludes -Iminilibx-linux
-
-all: $(SRCS) $(LIBFT)
+$(NAME): $(SRCS) $(LIBFT)
 	$(CC) $(CFLAGS) $(SRCS) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o $(NAME)
 
+
+all: $(NAME)
+
 memory: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --errors-for-leak-kinds=definite,possible --suppressions=minilibx-linux/mlx.supp ./$(NAME) maps/test.ber
+	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --errors-for-leak-kinds=definite,possible --suppressions=minilibx-linux/mlx.supp ./$(NAME) maps/testt.ber
 
 map:$(MAP) $(LIBFT)
 	$(CC) $(CFLAGS) $(MAP) $(LIBFT) $(INCLUDES) $(MLX_FLAGS) -o kk

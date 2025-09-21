@@ -6,7 +6,7 @@
 /*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 02:00:52 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/21 09:34:53 by mhdeeb           ###   ########.fr       */
+/*   Updated: 2025/09/21 12:48:39 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	close_window(t_minilibx *data)
 
 int	game_over(t_minilibx *data, int win)
 {
+	data->map.player.steps++;
+	ft_printf("steps: %d\n", data->map.player.steps);
 	if (win)
 		write(1, "You Win!\n", 9);
 	else

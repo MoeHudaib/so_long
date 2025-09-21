@@ -6,7 +6,7 @@
 /*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 21:23:05 by mohammad          #+#    #+#             */
-/*   Updated: 2025/09/21 12:02:53 by mhdeeb           ###   ########.fr       */
+/*   Updated: 2025/09/21 12:30:30 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	handle_rest(t_minilibx *data, int new_x, int new_y, int movement_type)
 	int	old_x;
 	int	old_y;
 
-	if (!data)
-		return ;
 	old_x = data->map.player.position.x;
 	old_y = data->map.player.position.y;
 	data->map.grid[old_y][old_x] = '0';

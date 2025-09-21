@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_hw.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mohammad <mohammad@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mhdeeb <mhdeeb@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 14:40:33 by mhdeeb            #+#    #+#             */
-/*   Updated: 2025/09/20 19:35:03 by mohammad         ###   ########.fr       */
+/*   Updated: 2025/09/21 13:33:23 by mhdeeb           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	get_map_hw(const char *filename, t_map *map)
 	int	fd;
 	int	status;
 
+	map->width = 0;
+	map->height = 0;
 	if (!filename || !map)
 		return (INVALID_FILE_NAME);
 	fd = open(filename, O_RDONLY);
